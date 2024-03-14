@@ -23,6 +23,8 @@ export async function POST(req: Request) {
       return new NextResponse(
         JSON.stringify({
           result,
+          user: userWithoutPass,
+          token: accessToken,
           message: "login suscessfull",
           status: 200,
         })

@@ -2,6 +2,7 @@
 
 import { LoginSchema } from "@/schema";
 import * as z from "zod";
+import { signIn } from "@/auth";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
@@ -31,9 +32,12 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     const res = await data.json();
     if (data.status === 201 || res.ok) {
       console.log(res);
+      signIn(res.token);
+      const user = res.user;
 
       return {
         success: "Login successfully",
+        user,
       };
     }
     if (data.status === 400) {
