@@ -1,17 +1,18 @@
 "use server";
 
-import { RegisterSchema } from "@/schema";
+import { LoginSchema } from "@/schema";
 import * as z from "zod";
 
-
-export const register = async (values: z.infer<typeof RegisterSchema>) => {
-  const validatedFields = RegisterSchema.safeParse(values);
-  console.log(values);
+export const login = async (values: z.infer<typeof LoginSchema>) => {
+  const validatedFields = LoginSchema.safeParse(values);
   if (!validatedFields.success) {
     return {
       error: "Login Failed. Please check your email and password.",
     };
   }
+
+  const { email, password } = validatedFields.data;
+
   try {
     const data = await fetch(`api/register`, {
       method: "POST",
@@ -21,7 +22,10 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         "Access-Control-Allow-Origin": "*",
         credentials: "include",
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        email,
+        password,
+      }),
     });
     console.log(data.status);
     const res = await data.json();
@@ -29,7 +33,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
       console.log(res);
 
       return {
-        success: "Account created successfully, check your email!",
+        success: "Login successfully",
       };
     }
     if (data.status === 400) {
