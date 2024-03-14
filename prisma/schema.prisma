@@ -6,3 +6,54 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model Social {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  platform   String
+  speakersId String? @db.ObjectId
+  url        String
+}
+
+model buyers {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model cartitems {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model carts {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model highlights {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  date        String
+  description String
+  speaker     String
+  title       String
+  year        String
+}
+
+model products {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
+
+model speakers {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  bio        String
+  image      String
+  name       String
+  occupation String
+  title      String
+}
+
+
+model user {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  name  String?
+  email String? @unique
+  role  String?
+
+  @@map("users")
+}
